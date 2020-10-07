@@ -170,7 +170,7 @@ def classifyAll(tokens):
 #Global Variable (2-D Array) that holds all the classified tokens, and their line number in order from left to right
 #Each element is a classified token
 #    Classified Token:  [token value, token type, line number]
-#    Example:           [10, 'intgeger', 4]
+#    Example:           [10, 'integer', 4]
 #       so this token value is 10, its an integer, and its on line 4
 global classifiedTokens
 classifiedTokens = []
