@@ -1,6 +1,7 @@
 with Text_IO ; use Text_IO ;
 
 procedure Main is
+   f : float := 5.99;
    x : integer := 5 ;
    y : integer := 10 ;
    z : integer := x + y ;

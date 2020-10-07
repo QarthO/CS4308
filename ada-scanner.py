@@ -1,9 +1,8 @@
-## CS4308
+## Class: CS 4308 Section 01
+## Term: Fall 2020
+## Names: Derek Comella, Kellen Hill, Thomas Williams
+## Instructor: Deepa Muralidhar
 ## Project Deliverable 1: Scanner
-## Derek Comella
-## Kellen Hill
-## Thomas Williams
-
 
 #Reads test File
 #Prints out the test file to console
