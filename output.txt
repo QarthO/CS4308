@@ -1,0 +1,18 @@
+Reading File: testfile.adb
+  Line1: with Text_IO ; use Text_IO ;
+  Line2:
+  Line3: procedure Main is
+  Line4: x : integer := 5 ;
+  Line5: y : integer := 10 ;
+  Line6: z : integer := x + y ;
+  Line7: message : string := "This is a message!" ;
+  Line8: begin
+  Line9: Put_Line ( "Hello World!" ) ;
+  Line10: Put_Line ( integer ' image ( z ) ) ;
+  Line11: Put_Line ( message ) ;
+  Line12: end Main ;
+End of File
+Tokens Array: [['with', 'Text_IO', ';', 'use', 'Text_IO', ';'], [], ['procedure', 'Main', 'is'], ['x', ':', 'integer', ':=', '5', ';'], ['y', ':', 'integer', ':=', '10', ';'], ['z', ':', 'integer', ':=', 'x', '+', 'y', ';'], ['message', ':', 'string', ':=', '"This', 'is', 'a', 'message!"', ';'], ['begin'], ['Put_Line', '(', '"Hello', 'World!"', ')', ';'], ['Put_Line', '(', 'integer', "'", 'image', '(', 'z', ')', ')', ';'], ['Put_Line', '(', 'message', ')', ';'], ['end', 'Main', ';']]
+Classified Tokens: [['with', 'keyword', 1], ['Text_IO', 'identifier', 1], [';', 'delimiter', 1], ['use', 'keyword', 1], ['Text_IO', 'identifier', 1], [';', 'delimiter', 1], ['procedure', 'keyword', 3], ['Main', 'identifier', 3], ['is', 'keyword', 3], ['x', 'identifier', 4], [':', 'delimiter', 4], ['integer', 'identifier', 4], [':=', 'delimiter', 4], ['5', 'integer', 4], [';', 'delimiter', 4], ['y', 'identifier', 5], [':', 'delimiter', 5], ['integer', 'identifier', 5], [':=', 'delimiter', 5], ['10', 'integer', 5], [';', 'delimiter', 5], ['z', 'identifier', 6], [':', 'delimiter', 6], ['integer', 'identifier', 6], [':=', 'delimiter', 6], ['x', 'identifier', 
+6], ['+', 'delimiter', 6], ['y', 'identifier', 6], [';', 'delimiter', 6], ['message', 'identifier', 7], [':', 'delimiter', 7], ['string', 'identifier', 7], [':=', 'delimiter', 7], ['"This', 'string', 7], ['is', 'string', 
+7], ['a', 'string', 7], ['message!"', 'string', 7], [';', 'delimiter', 7], ['begin', 'keyword', 8], ['Put_Line', 'identifier', 9], ['(', 'delimiter', 9], ['"Hello', 'string', 9], ['World!"', 'string', 9], [')', 'delimiter', 9], [';', 'delimiter', 9], ['Put_Line', 'identifier', 10], ['(', 'delimiter', 10], ['integer', 'identifier', 10], ["'", 'delimiter', 10], ['image', 'identifier', 10], ['(', 'delimiter', 10], ['z', 'identifier', 10], [')', 'delimiter', 10], [')', 'delimiter', 10], [';', 'delimiter', 10], ['Put_Line', 'identifier', 11], ['(', 'delimiter', 11], ['message', 'identifier', 11], [')', 'delimiter', 11], [';', 'delimiter', 11], ['end', 'keyword', 12], ['Main', 'identifier', 12], [';', 'delimiter', 12]]
