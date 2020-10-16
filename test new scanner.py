@@ -25,15 +25,16 @@ class Token:
     
 def read(file):
     print("Reading File: " + file)
-    file1 = open(file, 'r')
-    lines = file1.readlines()
+    print('=====================================================================================')
+    file = open(file, 'r')
+    lines = file.readlines()
     print(''.join(map(str,lines)))
-    print("End of File")
+    print('=====================================================================================')
+
     return lines
 
-#just temp delimiters for testing, but need to use whole list in other file
-delimiters = ['+', ';', '(', ')', '{', '}']
-
+#all single character ada delimiters
+delimiters = ['&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '|', '\"', '#', '[', ']', '{', '}']
 
 def prepLine(line):
     for delimiter in delimiters:
@@ -42,6 +43,14 @@ def prepLine(line):
     return line
 
 def combineCompoundTokens(tokens):
+    compound_delimiters = ['=>', '..', '**', ':=', '/=', '>=', '<=', '<<', '>>', '<>']
+    
+    #below is just example for us how to get all tokens where line number is 3, incase we want to use this logic elsewhere
+    line = [token for token in tokens if token.get('line_number') == 1]
+
+    for token in tokens:
+        i = 0
+
     #seperate by line
         #if on seperate lines ignore
     #check compound delimiters
@@ -76,8 +85,7 @@ def generateRawTokens(lines):
     return tokens
 
 def main():
-    lines = read('test.java')
+    lines = read('testfile.adb')
     tokens = generateRawTokens(lines)
-    print('=====================================================================================')
     combineCompoundTokens(tokens)
 main()
