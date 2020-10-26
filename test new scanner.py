@@ -1,3 +1,10 @@
+# ███████╗ ██████╗ █████╗ ███╗   ██╗███╗   ██╗███████╗██████╗ 
+# ██╔════╝██╔════╝██╔══██╗████╗  ██║████╗  ██║██╔════╝██╔══██╗
+# ███████╗██║     ███████║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝
+# ╚════██║██║     ██╔══██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
+# ███████║╚██████╗██║  ██║██║ ╚████║██║ ╚████║███████╗██║  ██║
+# ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
+              
 class Token:
 
     token_counter = 0
@@ -16,6 +23,9 @@ class Token:
 
     def __repr__(self):
         return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('token_pos')))
+    
+    def __eq__(self, token):
+        return self.id == token.id
 
     def get(self, value):
         return self.token.get(value)
@@ -25,32 +35,27 @@ class Token:
     
 def read(file):
     print("Reading File: " + file)
-    print('=====================================================================================')
+    print('===================================================================')
     file = open(file, 'r')
     lines = file.readlines()
     print(''.join(map(str,lines)))
-    print('=====================================================================================')
+    print('===================================================================')
 
     return lines
 
 #all single character ada delimiters
-delimiters = ['&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '|', '\"', '#', '[', ']', '{', '}']
+delimiters = ['&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '|', '\"', '#', '[', ']', '{', '}', ' ']
+compound_delimiters = ['=>', '..', '**', ':=', '/=', '>=', '<=', '<<', '>>', '<>']
 
 def prepLine(line):
     for delimiter in delimiters:
         if delimiter in line:
+
             line = line.replace(delimiter, (' ' + delimiter + ' '))
     return line
 
 def combineCompoundTokens(tokens):
-    compound_delimiters = ['=>', '..', '**', ':=', '/=', '>=', '<=', '<<', '>>', '<>']
     
-    #below is just example for us how to get all tokens where line number is 3, incase we want to use this logic elsewhere
-    line = [token for token in tokens if token.get('line_number') == 1]
-
-    for token in tokens:
-        i = 0
-
     #seperate by line
         #if on seperate lines ignore
     #check compound delimiters
@@ -59,8 +64,7 @@ def combineCompoundTokens(tokens):
         #if string delimiter is found, combine all raw tokens until string delimiter is found again
     #check comment
         #if comment syntax is found combine the rest of the raw tokens on that line 
-        
-    return tokens
+    return
 
 def classifyRawToken(value):
     type = None
@@ -84,8 +88,41 @@ def generateRawTokens(lines):
     print("Tokens Array:\n" + '\n'.join(map(str,tokens)))
     return tokens
 
+def newPrepLine(line):
+    tokens = []
+    line_number = 0
+    for line in lines:
+        line_number += 1
+        token_pos = 1
+        raw_tokens = line.split()
+        current_token = None
+        name = None
+        token_type = None
+        end = False
+        for value in raw_tokens:
+            name += value
+            token = Token(name, token_type, line_number, token_pos)
+            token_pos += 1
+            tokens.append(token)
+            name = None
+
 def main():
     lines = read('testfile.adb')
-    tokens = generateRawTokens(lines)
-    combineCompoundTokens(tokens)
+    # tokens = generateRawTokens(lines)
+    # combineCompoundTokens(tokens)
+
+    # testtokens = splitLine(lines)
+    
+    line = 'x += 1;'
+
+    x = line.split()
+
+    print(x)
+
+
+    # line = [token for token in tokens if token.get('line_number') == 1]
+
+
+# line = [token for token in tokens if token.get('line_number') == line_number]
+
 main()
