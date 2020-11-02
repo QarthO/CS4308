@@ -1,193 +1,188 @@
-## Class: CS 4308 Section 01
-## Term: Fall 2020
-## Names: Derek Comella, Kellen Hill, Thomas Williams
-## Instructor: Deepa Muralidhar
-## Project Deliverable 1: Scanner
+# ███████╗ ██████╗ █████╗ ███╗   ██╗███╗   ██╗███████╗██████╗ 
+# ██╔════╝██╔════╝██╔══██╗████╗  ██║████╗  ██║██╔════╝██╔══██╗
+# ███████╗██║     ███████║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝
+# ╚════██║██║     ██╔══██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
+# ███████║╚██████╗██║  ██║██║ ╚████║██║ ╚████║███████╗██║  ██║
+# ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
 
-#Reads test File
-#Prints out the test file to console
-#Puts each line of the file into an element of an array
-#Returns the array
-#Example:
-#   line1: x = 5
-#   line2: y = 10
-#   -----
-#   Array: ['x = 5', 'y = 10']
-#   Array: [['x', '=', '5'], ['y', '=', '10']]
-#
-def read(file):
-    file1 = open(file, 'r')
-    lines = file1.readlines()
-    count = 0
-    print("Reading File: " + file)
-    for line in lines: 
-        count += 1
-        print("  Line{}: {}".format(count, line.strip()))
-    print("End of File")
-    return lines
+#token object             
+class Token:
 
-#Splits each line (element) into an array with every element being a token
-#Prints out the new 2-D array
-#Returns this new 2-D Array
-#   Input  Array: ['x = 5', 'y = 10']
-#   Output Array: [['x', '=', '5'], ['y', '=', '10']]
-def generateTokens(lines):
-    global tokens
-    tokens = []
-    for line in lines:
-        tokens.append(line.split())
-    print("Tokens Array:", tokens)
-    return tokens
+    #token/id counter
+    token_counter = 0
 
+    #initialization 
+    def __init__(self, name, line_number, token_pos):
+        Token.token_counter += 1
+        self.token = dict()
+        self.token['name'] = name
+        self.token['type'] = type
+        self.token['line_number'] = line_number
+        self.token['token_pos'] = token_pos
+        self.id = Token.token_counter
+        self.updateType()
+
+    #Example of String: token = (name, type, line_number, token_position)
+
+    #overrides string
+    def __str__(self):
+        return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('token_pos')))
+
+    #overrides representation
+    def __repr__(self):
+        return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('token_pos')))
+    
+    #overrides equals based on id
+    def __eq__(self, token):
+        return self.id == token.id
+
+    #gets the value from the inputed key
+    def get(self, key):
+        return self.token.get(key)
+
+    #sets the inputed value at the key
+    def set(self, key, value):
+        self.token[key] = value
+
+    #Classifies the token
+    def updateType(self):
+
+        name = self.token['name']
+
+        #Keyword
+        if isKeyword(name):
+            self.token['type'] = 'keyword'
+            return
+
+        #Delimiter
+        if isDelimiter(name):
+            self.token['type'] = 'delimiter'
+            return
+
+        #Integer
+        if isInteger(name):
+            self.token['type'] = 'integer'
+            return
+        
+        #Float
+        if isFloat(name):
+            self.token['type'] = 'float'
+            return
+
+        #Boolean
+        if isBoolean(name):
+            self.token['type'] = 'boolean'
+            return
+
+        #Identifier
+        if isIdentifier(name):
+            self.token['type'] = 'identifier'
+            return
+    
+        #Comment
+        if isComment(name):
+            self.token['type'] = 'comment'
+            return
+
+        #String
+        if isString(name):
+            self.token['type'] = 'string'
+            return
+
+        self.token['type'] = None
+
+#if the token isnt one of the above things, defaults to unclassified
 #Checks if the input token is a Keyword of the ADA language
 #Returns true if the token is a keyword, false if not
-def isKeyword(token):
+def isKeyword(name):
     keywords = ['abort', 'abs', 'abstract', 'accept', 'access', 'aliased', 'all', 'and', 'array', 'at', 'begin', 'body', 'case', 'constant', 'declare', 'delay', 'delta', 'digits', 'do', 'else', 'elseif', 'end', 'entry', 'exception', 'exit', 'for', 'function', 'generic', 'goto', 'if', 'in', 'interface', 'is', 'limited', 'loop', 'mod', 'new', 'not', 'null', 'of', 'or', 'others', 'out', 'overriding', 'package', 'pragma', 'private', 'procedure', 'protected', 'raise', 'range', 'record', 'rem', 'renames', 'requeue', 'return', 'reverse', 'select', 'seperate', 'some', 'subtype', 'synchronized', 'tagged', 'task', 'terminate', 'then', 'type', 'until', 'use', 'when', 'while', 'with', 'xor']
     for keyword in keywords:
-        if keyword == token:
+        if keyword == name:
             return True
     return False
 
 #Chekcs if the input token is a delimiter of the ADA language
 #Returns true if the token is a delimiter, false if not
-def isDelimiter(token):
+def isDelimiter(name):
     single_delimiters = ['&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '|']
     compound_delimiters = ['=>', '..', '**', ':=', '/=', '>=', '<=', '<<', '>>', '<>']
     other_delimiters = ['\"', '#', '[', ']', '{', '}']
     
     for single_delimiter in single_delimiters:
-        if single_delimiter == token:
+        if single_delimiter == name:
             return True
     
     for compound_delimiter in compound_delimiters:
-        if compound_delimiter == token:
+        if compound_delimiter == name:
             return True
 
     for other_delimiter in other_delimiters:
-        if other_delimiter == token:
+        if other_delimiter == name:
             return True
 
     return False
 
 #Checks if token is an integer
 #Returns true if the token is an integer, false if not
-def isInteger(token):
-    return token.isdigit()
+def isInteger(name):
+    return name.isdigit()
 
 #Checks if token is a float
 #Returns true if the token is a float, false if not
-def isFloat(token):
+def isFloat(name):
     try:
-        float(token)
+        float(name)
         return True
     except ValueError:
         return False
 
 #Checks if token is a boolean value
 #Returns true if the token is a boolean value, false if not
-def isBoolean(token):
-    return (token.lower() == 'true' or token.lower() == 'false')
+def isBoolean(name):
+    return (name.lower() == 'true' or name.lower() == 'false')
 
 #Checks if token is an identifier
 #A string is considered a valid identifier if it only contains alphanumeric letters (a-z) and (0-9), or underscores (_). 
 #A valid identifier cannot start with a number, or contain any spaces.
 #Returns true if the token is an identifier, false if not
-def isIdentifier(token):
-    return token.isidentifier()
+def isIdentifier(name):
+    return name.isidentifier()
 
 #Checks if token starts with the comment syntax (--)
 #Returns true if the token starts with the comment syntax, false if not
-def isComment(token):
-    return token.startswith('--')
+def isComment(name):
+    return name.startswith('--')
 
 #Checks if token starts or ends with the string syntax ("")
 #Returns true if the token starts or ends with the string syntax, false if not
-def isString(token):
-    return token.startswith("\"") or token.endswith('\"')
-
-#Classify a token putting its type into an array
-#Returns an array 
-#   Array: [token, type, line number]
-def classifyToken(token, line_number):
-
-    #runs through all these forms of classificaiton
-
-    if isKeyword(token):
-        return [token, 'keyword', line_number]
-
-    if isDelimiter(token):
-        return [token, 'delimiter', line_number]
-
-    if isInteger(token):
-        return [token, 'integer', line_number]
-
-    if isFloat(token):
-        return [token, 'float', line_number]
-
-    if isBoolean(token):
-        return [token, 'boolean', line_number]
-
-    if isIdentifier(token):
-        return [token, 'identifier', line_number]
+def isString(name):
+    return name.startswith("\"") or name.endswith('\"')    
     
-    if isComment(token):
-        return True
+def read(file):
+    print("Reading File: " + file)
+    print('===================================================================')
+    file = open(file, 'r')
+    lines = file.readlines()
+    print(''.join(map(str,lines)))
+    print('===================================================================')
+    return lines
 
-    if isString(token):
-        return True
-
-    #if the token isnt one of the above things, defaults to unclassified
-    return [token, 'unclassified', line_number]
-
-#Takes the 2-D array of tokens and classifies all 
-def classifyAll(tokens):
-    classifiedTokens = []
-
-    #Loop through all the tokens 
+def generateTokens(lines):
+    tokens = []
     line_number = 0
-    comment = False
-    string = 0
-    for line in tokens:
+    for line in lines:
         line_number += 1
-        for token in line:
-            if isComment(token):
-                comment = True
-            if comment != True:
-                if isString(token):
-                    string += 1
-                if string == 0:
-                    classifiedTokens.append(classifyToken(token, line_number))
-                else:
-                    if string == 2:
-                        string = 0
-                    classifiedTokens.append([token, 'string', line_number])
-            else:
-                classifiedTokens.append([token, 'comment', line_number])
-        comment = False        
-    return classifiedTokens
+        token_pos = 1
+        values = line.split()
+        for value in values:
+            token = Token(value, line_number, token_pos)
+            token_pos += 1
+            tokens.append(token)
+    print("Tokens Array:\n" + '\n'.join(map(str,tokens)))
+    return tokens
 
-
-#Global Variable (2-D Array) that holds all the classified tokens, and their line number in order from left to right
-#Each element is a classified token
-#    Classified Token:  [token value, token type, line number]
-#    Example:           [10, 'integer', 4]
-#       so this token value is 10, its an integer, and its on line 4
-global classifiedTokens
-classifiedTokens = []
-
-#Main function
 def main():
-    #Reads the test file putting into array of lines of code
-    file1 = read('testfile.adb')
+    lines = read('programs.adb')
+    tokens = generateTokens(lines)
 
-    #Translates into tokens
-    tokens1 = generateTokens(file1)
-
-    #Classifies each token
-    classifiedTokens1 = classifyAll(tokens1)
-
-    #Prints to show that we successfully stored all the variables
-    print('Classified Tokens:', classifiedTokens1)
-
-#runs the main function
 main()
