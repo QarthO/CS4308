@@ -1,10 +1,13 @@
+-- Derek, Kellen, Thomas
+-- Test File
+
 with Text_IO; use Text_IO; 
 
 procedure Main is
    a : integer := 5;
    b : integer := 10;
    c : integer := a+b;
-   message: string := "This is a message!";
+   message: string := "This is a message!"; -- This is a comment
    input: String(1 .. 1);
    
 begin
