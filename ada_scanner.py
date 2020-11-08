@@ -14,25 +14,25 @@ class Token:
     token_counter = 0
 
     #initialization 
-    def __init__(self, name, line_number, token_pos):
+    def __init__(self, name, line_number, line_pos):
         Token.token_counter += 1
         self.token = dict()
         self.token['name'] = name
         self.token['type'] = type
         self.token['line_number'] = line_number
-        self.token['token_pos'] = token_pos
+        self.token['line_pos'] = line_pos
         self.id = Token.token_counter
         self.updateType()
-
-    #Example of String: token = (name, type, line_number, token_position)
+        
+    #Example of String: token = (name, type, line_number, line_pos)
 
     #overrides string
     def __str__(self):
-        return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('token_pos')))
+        return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('line_pos')))
 
     #overrides representation
     def __repr__(self):
-        return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('token_pos')))
+        return str((self.get('name'), self.get('type'), self.get('line_number'), self.get('line_pos')))
     
     #overrides equals based on id
     def __eq__(self, token):
@@ -165,105 +165,119 @@ def isComment(name):
 #Returns true if the token starts or ends with the string syntax, false if not
 def isString(name):
     return name.startswith("\"") or name.endswith('\"')    
-    
-def seperate(line):
-    raw_tokens = []
-    line_pos = 0
-    start_pos = 1
-    x = ""
-    comment = False
-    string = False
 
-
-    for c in line:
-        line_pos += 1
-        if start_pos == 1 and ' ' in x:
-            if c == ' ':
-                x += c
-            else:
-                if x != '':
-                    raw_tokens.append((x, start_pos))
-                start_pos = line_pos
-                x = c
-        else:
-            if x == '--':
-                comment = True
-            if x == "\"":
-                string = True
-            if comment or string:
-                if comment:
-                    x += c
-                if string:
-                    if c == "\"":
-                        comment = False
-                        raw_tokens.append((x+c, start_pos))
-                        start_pos = line_pos
-                        x = ''
-                    else:
-                        x+=c    
-            else:
-                if x == '':
-                    x = ''
-                elif x == ' ' and c != ' ':
-                    x = ''
-                    start_pos += 1
-                elif x != '' and c == ' ':
-                    raw_tokens.append((x, start_pos))
-                    start_pos = line_pos
-                    x = ''
-                elif isDelimiter(x):
-                    if not x+c in compound_delimiters:
-                        raw_tokens.append((x, start_pos))
-                        start_pos = line_pos
-                        x = ''
-                elif x in compound_delimiters:
-                    raw_tokens.append((x, start_pos))
-                    start_pos = line_pos
-                    x = ''
-                elif c == ';':
-                    raw_tokens.append((x, start_pos))
-                    x = ''
-                elif isDelimiter(c) and x != '':
-                    raw_tokens.append((x, start_pos))
-                    start_pos = line_pos
-                    x = ''
-                x += c
-        if x.endswith('\n') and not x.startswith('\n'):
-            raw_tokens.append((x.strip('\n'), start_pos))
-            x = ''
-
-        
-    return raw_tokens
-
-
+#Scanner class
 class Scanner:
 
+    #Creating the tokens array
     tokens = []
     
+    #Initialization function
     def __init__(self, filename):
+        self.debug = False
         self.file_lines = self.read(filename)
         self.generateTokens(self.file_lines)
-    
+        
+    #Reads the file
     def read(self, filename):
-        print("Reading File: " + filename)
-        print('===================================================================')
+        if self.debug:
+            print("Reading File: " + filename)
+            print('===================================================================')
         file = open(filename, 'r')
         lines = file.readlines()
-        print(''.join(map(str,lines)))
-        print('===================================================================')
+        if self.debug:
+            print(''.join(map(str,lines)))
+            print('===================================================================')
         return lines
 
+    #Generates the tokens from the lines of code from the file
     def generateTokens(self, lines):
         line_number = 0
         for line in lines:
             line_number += 1
             token_pos = 1
-            values = line.split()
+            values = self.seperate(line)
             for value in values:
-                token = Token(value, line_number, token_pos)
+                token = Token(value[0], line_number, value[1])
                 token_pos += 1
                 self.tokens.append(token)
-        print("Tokens Array:\n" + '\n'.join(map(str,self.tokens)))
+        if self.debug:
+            print("Tokens Array Format: (name, type, line number, line position")
+            print('\n'.join(map(str,self.tokens)))
+    
+    def getLines(self):
+        return copy.deepcopy(self.file_lines)
 
+    #Returns a deepcopy of the tokens generated from scanning the file
     def getTokens(self):
         return copy.deepcopy(self.tokens)
+    
+    #Enables/Disable printing stuff to console for easier debugging
+    def setDebug(self, value):
+        self.debug = value
+    
+    #Splits into seperate raw tokens (unclassified)
+    def seperate(self, line):
+        raw_tokens = []
+        chars = []
+        line_pos = 0
+        token_name = ''
+        start_pos = 1
+    
+        #Assigns line position to each character
+        for c in line:
+            line_pos += 1
+            chars.append((c, line_pos))
+
+        #Loops through the charactesr
+        for c in chars :
+
+            #Skips spaces
+            if token_name.isspace():
+                token_name = token_name.lstrip()
+                start_pos +=1
+                token_name += c[0]
+            
+            elif token_name.startswith('--'):
+                token_name += c[0]
+
+            elif token_name.startswith('\"'):
+                if c[0] == '\"':
+                    raw_tokens.append((token_name+c[0], start_pos))
+                    start_pos = c[1]+1
+                    token_name = ''
+                else:
+                    token_name += c[0]
+
+            #If next character is a space or delimiter, then puts concatentated token name into the raw tokens
+            elif token_name and (isDelimiter(c[0]) or c[0].isspace()):
+                if isDelimiter(token_name):
+                    if not isDelimiter(c[0]):
+                        raw_tokens.append((token_name, start_pos))
+                        start_pos = c[1]
+                        token_name = c[0]
+                    elif isDelimiter(token_name+c[0]):
+                        if not token_name+c[0] == '--':
+                            raw_tokens.append((token_name+c[0], start_pos))
+                            start_pos = c[1]+1
+                            token_name = ''
+                        else: 
+                            token_name = '--'
+                elif not token_name.isspace():
+                    raw_tokens.append((token_name, start_pos))
+                    start_pos = c[1]
+                    token_name = c[0]
+            
+            elif isDelimiter(token_name):
+                if not isDelimiter(c[0]):
+                    raw_tokens.append((token_name, start_pos))
+                    start_pos = c[1]
+                    token_name = c[0]
+
+            else:
+                token_name += c[0]
+        
+        if token_name.startswith('--'):
+            raw_tokens.append((token_name.rstrip(), start_pos))
+
+        return raw_tokens
