@@ -174,7 +174,7 @@ class Scanner:
     
     #Initialization function
     def __init__(self, filename):
-        self.debug = False
+        self.debug = True
         self.file_lines = self.read(filename)
         self.generateTokens(self.file_lines)
         
