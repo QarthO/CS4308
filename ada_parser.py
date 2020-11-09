@@ -8,15 +8,37 @@ class Parser:
     syntaxErrors = []
 
     def parse(self, tokens):
+        counter = 0
+        tokenCounter = 1
+        previous = 0
         for x in tokens:
-            if tokens.get('line_number')>6 and tokens.get('line_number')<11:
-                
+            if (tokens.get('line_number')>6 and tokens.get('line_number')<12) or (tokens.get('line_number')>13 and tokens.get('line_number')<26):
+                if tokens.get('line_number')!=counter:
+                    counter = tokens.get('line_number')
+                    #tree starts
+                    root.data = x
+                if tokens.get('type') = 'delimiter':
+                    temp.data = root
+                    root.data = x
+                    root.left = temp
+
 
     #print parser output
     def getOutput():
         #loop for chopping up input from scanner into lines
         for x in tokens.length:
             line = [token for token in tokens if token.get('line_number') == x]
+
+class Node:
+
+    def __init__(self, data):
+    
+        # left child
+        self.left = None
+        # right child
+        self.right = None
+        # node's value
+        self.data = data
 
 #need to build out tree class
 class Tree:
