@@ -175,7 +175,7 @@ class Scanner:
     
     #Initialization function
     def __init__(self, filename):
-        self.debug = False
+        self.debug = True
         self.file_lines = self.read(filename)
         self.generateTokens(self.file_lines)
         self.parser = Parser(self.tokens, self.file_lines)
@@ -216,7 +216,8 @@ class Scanner:
 
     def parseLines(self, line_numbers):
         for line_number in line_numbers:
-            self.parser.parse(line_number)
+            if not self.parser.checkSyntax(line_number):
+                self.parser.parse(line_number)
             self.getParserOutput(line_number)
 
     def getParserOutput(self, line_number):

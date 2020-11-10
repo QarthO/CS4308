@@ -34,7 +34,7 @@ class Parser:
                 line_pos = operator_token.get('line_pos')
                 break
             elif operator_token.get('name') == ':':
-                if next(token for token in statement if token.get('name') == ':='):
+                if len([token for token in statement if token.get('name') == ':=']) != 0:
                         tree_type = 'assignment_statement'
                         ptoken = next(token for token in statement if token.get('name') == ':=')
                         line_pos = ptoken.get('line_pos')
@@ -74,37 +74,76 @@ class Parser:
             parent = 'function'
             left = [token for token in line if token.get('line_pos') < line_pos]
             right = [token for token in line if token.get('line_pos') > line_pos] #and token.get('line_pos') < line_pos2]
-        elif tree_type == 'if':
+        elif tree_type == 'conditional_statement':
             parent = 'conditional_statement'
             left = 'if'
-            right = [token for token in line if token.get('line_pos') > line_pos and token.get('line_pos') < line_pos2]
+            right = [token for token in line if token.get('line_pos') > line_pos]# and token.get('line_pos') < line_pos2]
         self.tree = (parent, left, right, tree_type)
 
     def parserOutput(self, line_number):
         code_at_line = self.code[line_number-1].rstrip()
-        print('Code | Line: ' + str(line_number) + ' \n', code_at_line)
-        print('Parser Output:')
-        print('<block> -> <statement>')
-        print('<statement> <' + self.tree[3] + '>') 
-        if self.tree[3] == 'assignment_statement':
-            print('<assignment_statement> -> identifier <assignment_opeator> <value>' )
-            print(self.tree[1], '-> <identifier>')
-            print(self.tree[0], '-> <assignment_opeator>')
-            print(self.tree[2], '-> <value>')
-        elif self.tree[3] == 'type_statement':
-            print('<type_statement> -> identifier <type_operator> <type>' )
-            print(self.tree[1], '-> <identifier>')
-            print(self.tree[0], '-> <type_opeator>')
-            print(tree[2], '-> <value>')
-        elif self.tree[3] == 'function_statement':
-            print('<function_statement> -> identifier <function_operator> <function_parameters>' )
-            print(self.tree[1], '-> <identifier>')
-            print(self.tree[0], '-> <function_operator>')
-            print(self.tree[2], '-> <function_parameters>')
-        elif self.tree[3] == 'conditional_statement':
-            print('<conditional_statement> -> <conditional_keyword> <condition>' )
-            print(self.tree[1], '-> <conditional_keyword>')
-            print(self.tree[2], '-> <condition>')
+        print('\n')
+        if self.tree[3] == 'error':
+            print('SYNTAX ERROR')
+            print('Code | Line: ' + str(line_number) + ' \n', code_at_line)
+            print('Error:', self.tree[0])
+            print('Token #:', self.tree[2])
+            print('Example:', self.tree[1])
+        else:
+            print('Code | Line: ' + str(line_number) + ' \n', code_at_line)
+            print('Parser Output:')
+            print('<block> -> <statement>')
+            print('<statement> <' + self.tree[3] + '>') 
+            if self.tree[3] == 'assignment_statement':
+                print('<assignment_statement> -> identifier <assignment_opeator> <value>' )
+                print(self.tree[1], '-> <identifier>')
+                print(self.tree[0], '-> <assignment_opeator>')
+                print(self.tree[2], '-> <value>')
+            elif self.tree[3] == 'type_statement':
+                print('<type_statement> -> identifier <type_operator> <type>' )
+                print(self.tree[1], '-> <identifier>')
+                print(self.tree[0], '-> <type_opeator>')
+                print(self.tree[2], '-> <value>')
+            elif self.tree[3] == 'function_statement':
+                print('<function_statement> -> identifier <function_operator> <function_parameters>' )
+                print(self.tree[1], '-> <identifier>')
+                print(self.tree[0], '-> <function_operator>')
+                print(self.tree[2], '-> <function_parameters>')
+            elif self.tree[3] == 'conditional_statement':
+                print('<conditional_statement> -> <conditional_keyword> <condition>' )
+                print(self.tree[1], '-> <conditional_keyword>')
+                print(self.tree[2], '-> <condition>')
+
+    def checkSyntax(self, line_number):
+        line = self.code[line_number-1]
+        
+        end_line = line.find(';')
+        if_keyword = line.find('if')
+        
+        if end_line == -1 and if_keyword == -1:
+            self.tree = ('No end_of_line delimiter','; -> <end_of_line_delimiter>', 'expected after last token in line', 'error')
+            return True
+        
+        open_quotes = [c for c in line if c == '\"']
+
+        if len(open_quotes) %2 == 1:
+            self.tree = ('Mismatched Quotes', '\" -> <quote_delimiter>', 'Every open quote needs a close quote', 'error')
+            return True
+
+        open_paren = [c for c in line if c == '(']
+        close_paren = [c for c in line if c == ')']
+
+        if len(open_paren) != len(close_paren):
+            self.tree = ('Mismatched Parenthesis', '( and ) -> <paren_delimiters>', 'Every open parenthesis needs a close parenthesis', 'error')
+            return True
+
+        then_keyword = line.find('then')
+
+        if if_keyword != -1 and then_keyword == -1:
+            self.tree = ('Conditional Error', 'if <condition> then', 'Need \'then\' keyword after the condition', 'error')
+            return True
+
+        return False
 class Node:
     node_counter = 0
 

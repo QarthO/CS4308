@@ -1,0 +1,335 @@
+Reading File: test files/testfile.adb
+===================================================================
+   -- Derek, Kellen, Thomas
+-- Test File
+
+with Text_IO; use Text_IO;
+
+procedure Main is
+   a : integer := 5
+   b : integer := 10;
+   c : integer := a+b;
+   message: string := "This is a message!"; -- This is a comment   
+   input: String(1 .. 1);
+
+begin
+   Put_Line("Hello World!");
+   Put_Line(integer'image(c));
+   Put_Line(message);
+
+   Put_Line("1+1 = ?");
+   get(input);
+
+   if input = "2" then
+      Put_Line("Correct");
+   else
+      Put_Line("Wrong, 1+1 = 2");
+   end if;
+end Main;
+
+--Errors
+   --No ;
+   Put_Line(c)
+
+   --Mismatched Parenthesis
+   Put_Line(x+(b+1);
+
+   -- if keywords needs to be followed by then keyword
+   if x = 5
+
+   --Mismatched Quote
+   Put_Line("hello)
+===================================================================
+Tokens Array Format: (name, type, line number, line position)
+('-- Derek, Kellen, Thomas', 'comment', 1, 4)
+('-- Test File', 'comment', 2, 1)
+('with', 'keyword', 4, 1)
+('Text_IO', 'identifier', 4, 6)
+(';', 'delimiter', 4, 13)
+('use', 'keyword', 4, 15)
+('Text_IO', 'identifier', 4, 19)
+(';', 'delimiter', 4, 26)
+('procedure', 'keyword', 6, 1)
+('Main', 'identifier', 6, 11)
+('is', 'keyword', 6, 16)
+('a', 'identifier', 7, 4)
+(':', 'delimiter', 7, 6)
+('integer', 'identifier', 7, 8)
+(':=', 'delimiter', 7, 16)
+('5', 'integer', 7, 19)
+('b', 'identifier', 8, 4)
+(':', 'delimiter', 8, 6)
+('integer', 'identifier', 8, 8)
+(':=', 'delimiter', 8, 16)
+('10', 'integer', 8, 19)
+(';', 'delimiter', 8, 21)
+('c', 'identifier', 9, 4)
+(':', 'delimiter', 9, 6)
+('integer', 'identifier', 9, 8)
+(':=', 'delimiter', 9, 16)
+('a', 'identifier', 9, 19)
+('+', 'delimiter', 9, 20)
+('b', 'identifier', 9, 21)
+(';', 'delimiter', 9, 22)
+('message', 'identifier', 10, 4)
+(':', 'delimiter', 10, 11)
+('string', 'identifier', 10, 13)
+(':=', 'delimiter', 10, 20)
+('"This is a message!"', 'string', 10, 23)
+(';', 'delimiter', 10, 43)
+('-- This is a comment', 'comment', 10, 45)
+('input', 'identifier', 11, 4)
+(':', 'delimiter', 11, 9)
+('String', 'identifier', 11, 11)
+('(', 'delimiter', 11, 17)
+('1', 'integer', 11, 18)
+('..', 'delimiter', 11, 20)
+('1', 'integer', 11, 23)
+(')', 'delimiter', 11, 24)
+('begin', 'keyword', 13, 1)
+('Put_Line', 'identifier', 14, 4)
+('(', 'delimiter', 14, 12)
+('Hello', 'identifier', 14, 14)
+('World!', None, 14, 20)
+('Put_Line', 'identifier', 15, 4)
+('(', 'delimiter', 15, 12)
+('integer', 'identifier', 15, 13)
+("'", 'delimiter', 15, 20)
+('image', 'identifier', 15, 21)
+('(', 'delimiter', 15, 26)
+('c', 'identifier', 15, 27)
+(')', 'delimiter', 15, 28)
+('Put_Line', 'identifier', 16, 4)
+('(', 'delimiter', 16, 12)
+('message', 'identifier', 16, 13)
+(')', 'delimiter', 16, 20)
+('Put_Line', 'identifier', 18, 4)
+('(', 'delimiter', 18, 12)
+('1', 'integer', 18, 14)
+('+', 'delimiter', 18, 15)
+('1', 'integer', 18, 16)
+('=', 'delimiter', 18, 18)
+('?', None, 18, 20)
+('get', 'identifier', 19, 4)
+('(', 'delimiter', 19, 7)
+('input', 'identifier', 19, 8)
+(')', 'delimiter', 19, 13)
+('if', 'keyword', 21, 4)
+('input', 'identifier', 21, 7)
+('=', 'delimiter', 21, 13)
+('"2"', 'string', 21, 15)
+('then', 'keyword', 21, 19)
+('Put_Line', 'identifier', 22, 7)
+('(', 'delimiter', 22, 15)
+('Correct', 'identifier', 22, 17)
+('else', 'keyword', 23, 4)
+('Put_Line', 'identifier', 24, 7)
+('(', 'delimiter', 24, 15)
+('Wrong', 'identifier', 24, 17)
+(',', 'delimiter', 24, 22)
+('1', 'integer', 24, 24)
+('+', 'delimiter', 24, 25)
+('1', 'integer', 24, 26)
+('=', 'delimiter', 24, 28)
+('2', 'integer', 24, 30)
+('end', 'keyword', 25, 4)
+('if', 'keyword', 25, 8)
+(';', 'delimiter', 25, 10)
+('end', 'keyword', 26, 1)
+('Main', 'identifier', 26, 5)
+(';', 'delimiter', 26, 9)
+('--Errors', 'comment', 28, 1)
+('--No ;', 'comment', 29, 4)
+('Put_Line', 'identifier', 30, 4)
+('(', 'delimiter', 30, 12)
+('c', 'identifier', 30, 13)
+(')', 'delimiter', 30, 14)
+('--Mismatched Parenthesis', 'comment', 32, 4)
+('Put_Line', 'identifier', 33, 4)
+('(', 'delimiter', 33, 12)
+('x', 'identifier', 33, 13)
+('+', 'delimiter', 33, 14)
+('b', 'identifier', 33, 16)
+('+', 'delimiter', 33, 17)
+('1', 'integer', 33, 18)
+(')', 'delimiter', 33, 19)
+('-- if keywords needs to be followed by then keyword', 'comment', 35, 4)
+('if', 'keyword', 36, 4)
+('x', 'identifier', 36, 7)
+('=', 'delimiter', 36, 9)
+('5', 'integer', 36, 11)
+('--Mismatched Quote', 'comment', 38, 4)
+('Put_Line', 'identifier', 39, 4)
+('(', 'delimiter', 39, 12)
+('hello', 'identifier', 39, 14)
+
+
+SYNTAX ERROR
+Code | Line: 7
+    a : integer := 5
+Error: No end_of_line delimiter
+Token #: expected after last token in line
+Example: ; -> <end_of_line_delimiter>
+
+
+Code | Line: 8
+    b : integer := 10;
+Parser Output:
+<block> -> <statement>
+<statement> <assignment_statement>
+<assignment_statement> -> identifier <assignment_opeator> <value>
+[('b', 'identifier', 8, 4), (':', 'delimiter', 8, 6), ('integer', 'identifier', 8, 8)] -> <identifier>
+(':=', 'delimiter', 8, 16) -> <assignment_opeator>
+[('10', 'integer', 8, 19), (';', 'delimiter', 8, 21)] -> <value>
+
+
+Code | Line: 9
+    c : integer := a+b;
+Parser Output:
+<block> -> <statement>
+<statement> <assignment_statement>
+<assignment_statement> -> identifier <assignment_opeator> <value>
+[('c', 'identifier', 9, 4), (':', 'delimiter', 9, 6), ('integer', 'identifier', 9, 8)] -> <identifier>
+(':=', 'delimiter', 9, 16) -> <assignment_opeator>
+[('a', 'identifier', 9, 19), ('+', 'delimiter', 9, 20), ('b', 'identifier', 9, 21), (';', 'delimiter', 9, 22)] -> <value>
+
+
+Code | Line: 10
+    message: string := "This is a message!"; -- This is a comment
+Parser Output:
+<block> -> <statement>
+<statement> <assignment_statement>
+<assignment_statement> -> identifier <assignment_opeator> <value>
+[('message', 'identifier', 10, 4), (':', 'delimiter', 10, 11), ('string', 'identifier', 10, 13)] -> <identifier>
+(':=', 'delimiter', 10, 20) -> <assignment_opeator>
+[('"This is a message!"', 'string', 10, 23), (';', 'delimiter', 10, 43), ('-- This is a comment', 'comment', 10, 45)] -> <value>
+
+
+Code | Line: 11
+    input: String(1 .. 1);
+Parser Output:
+<block> -> <statement>
+<statement> <type_statement>
+<type_statement> -> identifier <type_operator> <type>
+[('input', 'identifier', 11, 4)] -> <identifier>
+(':', 'delimiter', 11, 9) -> <type_opeator>
+[('String', 'identifier', 11, 11), ('(', 'delimiter', 11, 17), ('1', 'integer', 11, 18), ('..', 'delimiter', 11, 20), ('1', 'integer', 11, 23), (')', 'delimiter', 11, 24)] -> <value>
+
+
+Code | Line: 14
+    Put_Line("Hello World!");
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('Put_Line', 'identifier', 14, 4)] -> <identifier>
+function -> <function_operator>
+[('Hello', 'identifier', 14, 14), ('World!', None, 14, 20)] -> <function_parameters>
+
+
+Code | Line: 15
+    Put_Line(integer'image(c));
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('Put_Line', 'identifier', 15, 4)] -> <identifier>
+function -> <function_operator>
+[('integer', 'identifier', 15, 13), ("'", 'delimiter', 15, 20), ('image', 'identifier', 15, 21), ('(', 'delimiter', 15, 26), ('c', 'identifier', 15, 27), (')', 'delimiter', 15, 28)] -> <function_parameters>
+
+
+Code | Line: 16
+    Put_Line(message);
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('Put_Line', 'identifier', 16, 4)] -> <identifier>
+function -> <function_operator>
+[('message', 'identifier', 16, 13), (')', 'delimiter', 16, 20)] -> <function_parameters>
+
+
+Code | Line: 18
+    Put_Line("1+1 = ?");
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('Put_Line', 'identifier', 18, 4)] -> <identifier>
+function -> <function_operator>
+[('1', 'integer', 18, 14), ('+', 'delimiter', 18, 15), ('1', 'integer', 18, 16), ('=', 'delimiter', 18, 18), ('?', None, 18, 20)] -> <function_parameters>
+
+
+Code | Line: 19
+    get(input);
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('get', 'identifier', 19, 4)] -> <identifier>
+function -> <function_operator>
+[('input', 'identifier', 19, 8), (')', 'delimiter', 19, 13)] -> <function_parameters>
+
+
+Code | Line: 21
+    if input = "2" then
+Parser Output:
+<block> -> <statement>
+<statement> <conditional_statement>
+<conditional_statement> -> <conditional_keyword> <condition>
+if -> <conditional_keyword>
+[('input', 'identifier', 21, 7), ('=', 'delimiter', 21, 13), ('"2"', 'string', 21, 15), ('then', 'keyword', 21, 19)] -> <condition>
+
+
+Code | Line: 22
+       Put_Line("Correct");
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('Put_Line', 'identifier', 22, 7)] -> <identifier>
+function -> <function_operator>
+[('Correct', 'identifier', 22, 17)] -> <function_parameters>
+
+
+Code | Line: 24
+       Put_Line("Wrong, 1+1 = 2");
+Parser Output:
+<block> -> <statement>
+<statement> <function_statement>
+<function_statement> -> identifier <function_operator> <function_parameters>
+[('Put_Line', 'identifier', 24, 7)] -> <identifier>
+function -> <function_operator>
+[('Wrong', 'identifier', 24, 17), (',', 'delimiter', 24, 22), ('1', 'integer', 24, 24), ('+', 'delimiter', 24, 25), ('1', 'integer', 24, 26), ('=', 'delimiter', 24, 28), ('2', 'integer', 24, 30)] -> <function_parameters>
+
+
+SYNTAX ERROR
+Code | Line: 30
+    Put_Line(c)
+Error: No end_of_line delimiter
+Token #: expected after last token in line
+Example: ; -> <end_of_line_delimiter>
+
+
+SYNTAX ERROR
+Code | Line: 33
+    Put_Line(x+(b+1);
+Error: Mismatched Parenthesis
+Token #: Every open parenthesis needs a close parenthesis
+Example: ( and ) -> <paren_delimiters>
+
+
+SYNTAX ERROR
+Code | Line: 36
+    if x = 5
+Error: Conditional Error
+Token #: Need 'then' keyword after the condition
+Example: if <condition> then
+
+
+SYNTAX ERROR
+Code | Line: 39
+    Put_Line("hello)
+Error: No end_of_line delimiter
+Token #: expected after last token in line
+Example: ; -> <end_of_line_delimiter>
