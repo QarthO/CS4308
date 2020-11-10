@@ -6,6 +6,7 @@
 # ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
 
 import copy
+from ada_parser import Parser
 
 #token object             
 class Token:
@@ -23,7 +24,7 @@ class Token:
         self.token['line_pos'] = line_pos
         self.id = Token.token_counter
         self.updateType()
-        
+
     #Example of String: token = (name, type, line_number, line_pos)
 
     #overrides string
@@ -174,9 +175,10 @@ class Scanner:
     
     #Initialization function
     def __init__(self, filename):
-        self.debug = True
+        self.debug = False
         self.file_lines = self.read(filename)
         self.generateTokens(self.file_lines)
+        self.parser = Parser(self.tokens, self.file_lines)
         
     #Reads the file
     def read(self, filename):
@@ -202,7 +204,7 @@ class Scanner:
                 token_pos += 1
                 self.tokens.append(token)
         if self.debug:
-            print("Tokens Array Format: (name, type, line number, line position")
+            print("Tokens Array Format: (name, type, line number, line position)")
             print('\n'.join(map(str,self.tokens)))
     
     def getLines(self):
@@ -211,6 +213,14 @@ class Scanner:
     #Returns a deepcopy of the tokens generated from scanning the file
     def getTokens(self):
         return copy.deepcopy(self.tokens)
+
+    def parseLines(self, line_numbers):
+        for line_number in line_numbers:
+            self.parser.parse(line_number)
+            self.getParserOutput(line_number)
+
+    def getParserOutput(self, line_number):
+        self.parser.parserOutput(line_number)
     
     #Enables/Disable printing stuff to console for easier debugging
     def setDebug(self, value):
