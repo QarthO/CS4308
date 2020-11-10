@@ -1,10 +1,10 @@
--- Derek, Kellen, Thomas
+   -- Derek, Kellen, Thomas  
 -- Test File
 
 with Text_IO; use Text_IO; 
 
 procedure Main is
-   a : integer := 5;
+   a : integer := 5
    b : integer := 10;
    c : integer := a+b;
    message: string := "This is a message!"; -- This is a comment
@@ -23,5 +23,17 @@ begin
    else
       Put_Line("Wrong, 1+1 = 2");
    end if;
-   
 end Main;
+
+--Errors
+   --No ;
+   Put_Line(c)
+
+   --Mismatched Parenthesis
+   Put_Line(x+(b+1);
+
+   -- if keywords needs to be followed by then keyword
+   if x = 5
+
+   --Mismatched Quote
+   Put_Line("hello)
